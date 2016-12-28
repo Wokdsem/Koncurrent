@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+def versionName = '1.0.0'
+
+java {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.7
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifacts {
+                groupId 'com.wokdsem.koncurrent'
+                artifact 'koncurrent'
+                version versionName
+                from components.java
+                artifact sourcesJar
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
