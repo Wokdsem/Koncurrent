@@ -1,32 +1,54 @@
+plugins {
+	id "com.jfrog.bintray" version "1.4"
+}
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 def versionName = '1.0.0'
 
-java {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.7
-}
+//java {
+//    sourceCompatibility = 1.8
+//    targetCompatibility = 1.7
+//}
 
 dependencies {
-    testCompile 'junit:junit:4.12'
+	testCompile 'junit:junit:4.12'
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifacts {
-                groupId 'com.wokdsem.koncurrent'
-                artifact 'koncurrent'
-                version versionName
-                from components.java
-                artifact sourcesJar
-            }
-        }
-    }
+	publications {
+		KPublications(MavenPublication) {
+			artifacts {
+				groupId 'com.wokdsem.koncurrent'
+				artifact 'koncurrent'
+				version versionName
+				from components.java
+				artifact sourcesJar
+			}
+		}
+	}
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+bintray {
+	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+	publications = ['KPublication']
+	pkg {
+		repo = 'maven'
+		name = 'koncurrent'
+		desc = 'Java library to launch concurrent actions.'
+		labels = ['java']
+		licenses = ['Apache-2.0']
+		websiteUrl = 'https://github.com/Wokdsem/Koncurrent'
+		vcsUrl = 'https://github.com/Wokdsem/Koncurrent'
+		issueTrackerUrl = 'https://github.com/Wokdsem/Koncurrent/issues'
+		version {
+			name = versionName + '-Release'
+		}
+	}
 }
