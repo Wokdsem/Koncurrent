@@ -1,12 +1,16 @@
 package com.wokdsem.koncurrent;
 
+import com.sun.org.apache.xpath.internal.operations.Equals;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import org.hamcrest.core.IsEqual;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static com.wokdsem.koncurrent.toolbox.Callables.getIntCallable;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class KoncurrentTests {
@@ -27,6 +31,21 @@ public class KoncurrentTests {
 		Results<Integer> results = koncurrent.execute(tasks);
 		for (int i = 0; i < size; i++) {
 			assertThat(results.get(i), is(i));
+		}
+	}
+	
+	@Test
+	public void execute_aTaskThrowAnException_causeExceptionCaught() {
+		final NullPointerException npe = new NullPointerException();
+		try {
+			koncurrent.execute(getIntCallable(1), getIntCallable(2), new Callable<String>() {
+				@Override
+				public String call() throws Exception {
+					throw npe;
+				}
+			});
+		} catch (ExecutionException e) {
+			assertEquals(npe, e.getCause());
 		}
 	}
 	
