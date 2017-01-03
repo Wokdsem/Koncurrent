@@ -1,5 +1,5 @@
 plugins {
-	id "com.jfrog.bintray" version "1.4"
+	id "com.jfrog.bintray" version "1.7.3"
 }
 apply plugin: 'java'
 apply plugin: 'maven-publish'
@@ -17,7 +17,7 @@ publishing {
 		KPublication(MavenPublication) {
 			artifacts {
 				groupId 'com.wokdsem.koncurrent'
-				artifact 'koncurrent'
+				artifactId 'koncurrent'
 				version versionName
 				from components.java
 				artifact sourcesJar
