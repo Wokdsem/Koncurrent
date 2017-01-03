@@ -14,7 +14,7 @@ dependencies {
 
 publishing {
 	publications {
-		KPublications(MavenPublication) {
+		KPublication(MavenPublication) {
 			artifacts {
 				groupId 'com.wokdsem.koncurrent'
 				artifact 'koncurrent'

@@ -1,11 +1,8 @@
 package com.wokdsem.koncurrent;
 
-import com.sun.org.apache.xpath.internal.operations.Equals;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import org.hamcrest.core.IsEqual;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static com.wokdsem.koncurrent.toolbox.Callables.getIntCallable;
