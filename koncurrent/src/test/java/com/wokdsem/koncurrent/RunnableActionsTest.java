@@ -1,11 +1,12 @@
 package com.wokdsem.koncurrent;
 
+import com.wokdsem.koncurrent.toolbox.Reference;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
-import static com.wokdsem.koncurrent.Callables.getIntCallable;
+import static com.wokdsem.koncurrent.toolbox.Callables.getIntCallable;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -62,7 +63,7 @@ public class RunnableActionsTest {
 			public synchronized Void call() throws Exception {
 				try {
 					inputLatch.countDown();
-					wait(500);
+					wait(5_000);
 					fail();
 				} catch (InterruptedException ignored) {
 				}
@@ -73,7 +74,7 @@ public class RunnableActionsTest {
 		newFixedThreadPool(1).execute(runnableAction);
 		inputLatch.await();
 		runnableAction.cancel();
-		boolean releasedByRunnable = outputLatch.await(1_000, TimeUnit.MILLISECONDS);
+		boolean releasedByRunnable = outputLatch.await(2_500, TimeUnit.MILLISECONDS);
 		assertThat(releasedByRunnable, is(true));
 	}
 	

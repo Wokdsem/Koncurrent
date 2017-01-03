@@ -1,4 +1,4 @@
-package com.wokdsem.koncurrent;
+package com.wokdsem.koncurrent.toolbox;
 
 public final class Reference<T> {
 	

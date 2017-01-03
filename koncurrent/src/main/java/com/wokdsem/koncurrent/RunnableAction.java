@@ -11,13 +11,13 @@ class RunnableAction<T> implements Runnable {
 		CANCELED
 	}
 	
-	private Callable<T> action;
+	private Callable<T> task;
 	private ActionListener<T> listener;
 	private Thread executor;
 	private RunnableState state;
 	
-	RunnableAction(Callable<T> action, ActionListener<T> listener) {
-		this.action = action;
+	RunnableAction(Callable<T> task, ActionListener<T> listener) {
+		this.task = task;
 		this.listener = listener;
 		this.state = RunnableState.NEW;
 	}
@@ -29,7 +29,7 @@ class RunnableAction<T> implements Runnable {
 			if (state != RunnableState.NEW) {
 				return;
 			}
-			runnableAction = action;
+			runnableAction = task;
 			executor = Thread.currentThread();
 			state = RunnableState.RUNNING;
 		}
@@ -40,7 +40,7 @@ class RunnableAction<T> implements Runnable {
 			deliverError(e);
 		} finally {
 			synchronized (this) {
-				action = null;
+				task = null;
 				listener = null;
 				executor = null;
 			}
@@ -70,7 +70,7 @@ class RunnableAction<T> implements Runnable {
 			if (executor != null) {
 				executor.interrupt();
 			}
-			action = null;
+			task = null;
 			listener = null;
 			state = RunnableState.CANCELED;
 		}
